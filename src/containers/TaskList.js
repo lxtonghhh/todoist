@@ -12,7 +12,9 @@ export default class TaskList extends Component{
 		desc:PropTypes.string,
 		index:PropTypes.number,
 		tasks:PropTypes.array,
-		onAddTask:PropTypes.func
+		onAddTask:PropTypes.func,
+		onFinishTask:PropTypes.func,
+		onDeleteTask:PropTypes.func
 	}
 	
 	constructor(){
@@ -29,12 +31,17 @@ export default class TaskList extends Component{
 		}
 		let date=this.state.addDate
 		if(!date){
-			date=Date()
+			date=new Date()
 		}
 		console.log('添加任务',this.state.addContent,typeof date)
 		this.props.onAddTask({content:this.state.addContent,ddl:date},this.props.index)
 		this.setState({addContent:''})
-		
+	}
+	handleFinishTask(taskIndex){
+		this.props.onFinishTask(taskIndex,this.props.index)
+	}
+	handleDeleteTask(taskIndex){
+		this.props.onDeleteTask(taskIndex,this.props.index)
 	}
 	onChange(key, value) {
 		console.log('TaskList onChange',key, value)
@@ -47,6 +54,8 @@ export default class TaskList extends Component{
 				<p>任务列表/项目{this.props.pid}： {this.props.desc}</p>
 				{this.props.tasks.map((item,i)=>
 					<Task key={i} index={i} ddl={item.ddl} content={item.content}
+					onDeleteTask={this.handleDeleteTask.bind(this)}
+					onFinishTask={this.handleFinishTask.bind(this)}
 					/>
 				)}
 				<div className="to-add-bar" style={this.state.isAdding?hidden:show} onClick={
