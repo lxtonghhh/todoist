@@ -13,12 +13,13 @@ class Task extends Component{
 		this.state={
 
 		}
+		
 	}
 	render(){
 		return (
 			<div className="task-item">
 				<p>任务： {this.props.content}</p>
-				<p>截止： {this.props.ddl}</p>
+				<p>截止： {this.props.ddl.toLocaleDateString()}</p>
 			</div>
 		)
 	}
