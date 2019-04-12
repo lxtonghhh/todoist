@@ -14,7 +14,8 @@ export default class TaskList extends Component{
 		tasks:PropTypes.array,
 		onAddTask:PropTypes.func,
 		onFinishTask:PropTypes.func,
-		onDeleteTask:PropTypes.func
+		onDeleteTask:PropTypes.func,
+		onUpdateTask:PropTypes.func
 	}
 	
 	constructor(){
@@ -43,6 +44,9 @@ export default class TaskList extends Component{
 	handleDeleteTask(taskIndex){
 		this.props.onDeleteTask(taskIndex,this.props.index)
 	}
+	handleUpdateTask(task,taskIndex){
+		this.props.onUpdateTask(task,taskIndex,this.props.index)
+	}
 	onChange(key, value) {
 		console.log('TaskList onChange',key, value)
 		this.state[key] = value
@@ -56,6 +60,7 @@ export default class TaskList extends Component{
 					<Task key={i} index={i} ddl={item.ddl} content={item.content}
 					onDeleteTask={this.handleDeleteTask.bind(this)}
 					onFinishTask={this.handleFinishTask.bind(this)}
+					onUpdateTask={this.handleUpdateTask.bind(this)}
 					/>
 				)}
 				<div className="to-add-bar" style={this.state.isAdding?hidden:show} onClick={

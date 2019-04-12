@@ -52,6 +52,16 @@ class App extends Component {
     this._updateTasks(projects,projectIndex,newTasks)
     console.log('APP删除任务 After',projects)
   }
+  handleUpdateTask(task,taskIndex,projectIndex){
+    const projects=this.state.projects
+    console.log('APP更新任务',taskIndex,projectIndex,projects)
+    const tasks=this.state.projects[projectIndex].tasks
+    tasks[taskIndex]=task
+    let newTasks=tasks
+    
+    this._updateTasks(projects,projectIndex,newTasks)
+    console.log('APP更新任务 After',projects)
+  }
   render() {
     return (
       <div className="App">
@@ -61,6 +71,7 @@ class App extends Component {
             onAddTask={this.handleAddTask.bind(this)}
             onDeleteTask={this.handleDeleteTask.bind(this)}
             onFinishTask={this.handleFinishTask.bind(this)}
+            onUpdateTask={this.handleUpdateTask.bind(this)}
           />)
         }
       </div>
