@@ -63,9 +63,9 @@ export default class TaskList extends Component{
 					onUpdateTask={this.handleUpdateTask.bind(this)}
 					/>
 				)}
-				<div className="to-add-bar" style={this.state.isAdding?hidden:show} onClick={
-					(e)=>{this.setState({isAdding:true})}
-				}>添加任务</div>
+				<div className="to-add-bar" style={this.state.isAdding?hidden:show} 
+				onClick={(e)=>{this.setState({isAdding:true})}}>添加任务
+				</div>
 				<div className="adding-bar" style={{...{flexDirection:'row'},...this.state.isAdding?show:hidden}}>
 					<table>
 						<tbody>

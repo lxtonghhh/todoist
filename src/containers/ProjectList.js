@@ -8,7 +8,7 @@ const hidden={display:'none'}
 export default class ProjectList extends Component{
 	static propTypes={
 		projects:PropTypes.array,
-		onAddTask:PropTypes.func,
+		onAddProject:PropTypes.func,
 		onDeleteProject:PropTypes.func,
 		onUpdateProject:PropTypes.func
 	}
@@ -17,21 +17,20 @@ export default class ProjectList extends Component{
 		super()
 		this.state={
 			isAdding:false,
-			addContent:'',
-			addDate:''
+			addContent:''
 		}
 	}
-	handleAddTask(){
-		if(!this.state.addContent){
+	handleAddProject(){
+		let content=this.state.addContent
+		if(!content){
 			return
 		}
-		let date=this.state.addDate
-		if(!date){
-			date=new Date()
-		}
-		console.log('添加任务',this.state.addContent,typeof date)
-		this.props.onAddTask({content:this.state.addContent,ddl:date},this.props.index)
-		this.setState({addContent:''})
+		//todo 申请pid
+		let newProject={pid:'',name:content,tasks:[]}
+		console.log('添加项目',newProject)
+		
+		this.props.onAddProject(newProject)
+		this.setState({addContent:'',isAdding:false})
 	}
 	handleUpdateProject(project,projectIndex){
 		this.props.onUpdateProject(project,projectIndex)
@@ -69,6 +68,20 @@ export default class ProjectList extends Component{
 								/>
 							</Menu.Item>
 						)}
+						<div className="to-add-bar" style={this.state.isAdding?hidden:show} 
+						onClick={(e)=>{this.setState({isAdding:true})}}>添加项目
+						</div>
+						<div className="adding-bar" style={{...{flexDirection:'row'},...this.state.isAdding?show:hidden}}>
+							<table>
+								<tbody>
+									<tr>
+										<td><Input size="small" placeholder="输入您的项目" value={this.state.addContent} onChange={this.onChange.bind(this, 'addContent')}/></td>
+									</tr>
+								</tbody>
+							</table>
+							<Button onClick={this.handleAddProject.bind(this)}>添加项目</Button>
+							<Button onClick={()=>{this.setState({isAdding:false,addContent:''})}}>取消</Button>
+						</div>
 					</Menu.SubMenu>			
 				</Menu>
 			</div>

@@ -42,7 +42,8 @@ class App extends Component {
       //删除
     }
     this.setState({projects:projects})
-  } 
+  }
+  //Task
   handleAddTask(task,projectIndex){
     const projects=this.state.projects
     console.log('APP添加任务',task,projectIndex,projects)
@@ -82,6 +83,15 @@ class App extends Component {
     this._updateTasks(projects,projectIndex,newTasks)
     console.log('APP更新任务 After',projects)
   }
+  //Project
+  handleAddProject(project){
+    const projects=this.state.projects
+    console.log('APP添加项目',project,projects)
+    projects.push(project)
+
+    this._updateProjects(projects)
+    console.log('APP添加项目 After',projects)
+  }
   handleUpdateProject(project,projectIndex){
     const projects=this.state.projects
     console.log('APP更新项目',projects,project,projectIndex)
@@ -115,6 +125,7 @@ class App extends Component {
               <div id="left-menu" className="grid-content bg-purple">
                 <ProjectList 
                 projects={this.state.projects}
+                onAddProject={this.handleAddProject.bind(this)}
                 onUpdateProject={this.handleUpdateProject.bind(this)}
                 onDeleteProject={this.handleDeleteProject.bind(this)}
                 />
