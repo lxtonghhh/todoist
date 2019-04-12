@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
 import TaskList from './containers/TaskList'
+import ProjectList from './containers/ProjectList'
 import 'element-theme-default'
 import './index.css';
+import {Layout} from 'element-react'
+import Logo from './components/Logo'
 import _ from 'lodash'
 class App extends Component {
   constructor(){
@@ -64,17 +67,38 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="App">
-        {this.state.projects.map((project,i)=>
-          <TaskList key={i} index={i} pid={project.pid} desc={project.desc} 
-            tasks={project.tasks}
-            onAddTask={this.handleAddTask.bind(this)}
-            onDeleteTask={this.handleDeleteTask.bind(this)}
-            onFinishTask={this.handleFinishTask.bind(this)}
-            onUpdateTask={this.handleUpdateTask.bind(this)}
-          />)
-        }
-      </div>
+        <div>
+          <Layout.Row gutter="20">
+            <Layout.Col span="24">
+              <div id="top-bar">
+                <div id="logo">
+                <Logo/>
+                </div>
+              </div>
+            </Layout.Col>
+          </Layout.Row>
+          <Layout.Row gutter="20" style={{paddingTop:'48px'}}>
+            <Layout.Col span="8">
+              <div id="left-menu" className="grid-content bg-purple">
+                <ProjectList />
+              </div>
+            </Layout.Col>
+            <Layout.Col span="16">
+              <div id="main" className="grid-content bg-purple-light">
+                {this.state.projects.map((project,i)=>
+                <TaskList key={i} index={i} pid={project.pid} desc={project.desc} 
+                  tasks={project.tasks}
+                  onAddTask={this.handleAddTask.bind(this)}
+                  onDeleteTask={this.handleDeleteTask.bind(this)}
+                  onFinishTask={this.handleFinishTask.bind(this)}
+                  onUpdateTask={this.handleUpdateTask.bind(this)}
+                />)
+                }
+              </div>
+            </Layout.Col>
+          </Layout.Row>
+        </div>
+      
     )
   }
 }
