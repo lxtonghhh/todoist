@@ -1,24 +1,16 @@
 import React,{Component} from 'react'
 import PropTypes from 'prop-types'
 import {Menu,Table,Form,Select,Button,Radio,Layout,Input} from 'element-react'
-import Task from '../components/Task'
-import DatePicker from '../components/DatePicker'
+import Project from '../components/Project'
 import _ from 'lodash'
 const show={display:'flex'}
 const hidden={display:'none'}
 export default class ProjectList extends Component{
 	static propTypes={
 		projects:PropTypes.array,
-
-
-		pid:PropTypes.string,
-		desc:PropTypes.string,
-		index:PropTypes.number,
-		tasks:PropTypes.array,
 		onAddTask:PropTypes.func,
-		onFinishTask:PropTypes.func,
-		onDeleteTask:PropTypes.func,
-		onUpdateTask:PropTypes.func
+		onDeleteProject:PropTypes.func,
+		onUpdateProject:PropTypes.func
 	}
 	
 	constructor(){
@@ -41,14 +33,11 @@ export default class ProjectList extends Component{
 		this.props.onAddTask({content:this.state.addContent,ddl:date},this.props.index)
 		this.setState({addContent:''})
 	}
-	handleFinishTask(taskIndex){
-		this.props.onFinishTask(taskIndex,this.props.index)
+	handleUpdateProject(project,projectIndex){
+		this.props.onUpdateProject(project,projectIndex)
 	}
-	handleDeleteTask(taskIndex){
-		this.props.onDeleteTask(taskIndex,this.props.index)
-	}
-	handleUpdateTask(task,taskIndex){
-		this.props.onUpdateTask(task,taskIndex,this.props.index)
+	handleDeleteProject(projectIndex){
+		this.props.onDeleteProject(projectIndex)
 	}
 	onChange(key, value) {
 		console.log('TaskList onChange',key, value)
@@ -72,10 +61,15 @@ export default class ProjectList extends Component{
 					<Menu.Item index="1"><i className="el-icon-message"></i>收件箱</Menu.Item>
 					<Menu.Item index="2"><i className="el-icon-date"></i>今天</Menu.Item>
 					<Menu.SubMenu index="3" title={<span><i className="el-icon-menu"></i>项目</span>}>
-						<Menu.Item index="1-1">选项1</Menu.Item>
-						<Menu.Item index="1-2">选项2</Menu.Item>
-					</Menu.SubMenu>
-					
+						{this.props.projects.map((item,i)=>
+							<Menu.Item index={"3-"+i} key={i}> 
+								<Project index={i} project={item}
+								onDeleteProject={this.handleDeleteProject.bind(this)}
+								onUpdateProject={this.handleUpdateProject.bind(this)}
+								/>
+							</Menu.Item>
+						)}
+					</Menu.SubMenu>			
 				</Menu>
 			</div>
 		)

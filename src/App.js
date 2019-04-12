@@ -13,19 +13,36 @@ class App extends Component {
     this.state={
       projects:[
         {
-          pid:'1',desc:"测试项目 请任意添加任务",
+          pid:'1',name:"欢迎",
           tasks:[
-            {content:'1',ddl:new Date()},//why new Date()得到Date对象 Date()只得到相应的string
+            {content:'请任意添加项目',ddl:new Date()},//why new Date()得到Date对象 Date()只得到相应的string
+            {content:'1',ddl:new Date()},
+          ]
+        },
+        {
+          pid:'2',name:"测试",
+          tasks:[
+            {content:'请任意添加项目',ddl:new Date()},//why new Date()得到Date对象 Date()只得到相应的string
             {content:'2',ddl:new Date()},
           ]
         }
-      ]
+      ],
+      activeIndex:null
     }
   }
   _updateTasks(projects,projectIndex,newTasks){
     projects[projectIndex].tasks=newTasks
     this.setState({projects:projects})
   }
+  _updateProjects(projects,projectIndex,newProject){
+    if(projectIndex!==null){
+      //更新
+      projects[projectIndex]=newProject
+    }else{
+      //删除
+    }
+    this.setState({projects:projects})
+  } 
   handleAddTask(task,projectIndex){
     const projects=this.state.projects
     console.log('APP添加任务',task,projectIndex,projects)
@@ -65,6 +82,22 @@ class App extends Component {
     this._updateTasks(projects,projectIndex,newTasks)
     console.log('APP更新任务 After',projects)
   }
+  handleUpdateProject(project,projectIndex){
+    const projects=this.state.projects
+    console.log('APP更新项目',projects,project,projectIndex)
+    let newProject=project
+    
+    this._updateProjects(projects,projectIndex,newProject)
+    console.log('APP更新项目 After',projects)
+  }
+  handleDeleteProject(projectIndex){
+    const projects=this.state.projects
+    console.log('APP删除项目',projects,projectIndex)
+    let deleteProject=projects.splice(projectIndex,1)
+    
+    this._updateProjects(projects)
+    console.log('APP删除项目 After',projects)
+  }
   render() {
     return (
         <div>
@@ -80,13 +113,17 @@ class App extends Component {
           <Layout.Row gutter="20" style={{paddingTop:'48px'}}>
             <Layout.Col span="8">
               <div id="left-menu" className="grid-content bg-purple">
-                <ProjectList />
+                <ProjectList 
+                projects={this.state.projects}
+                onUpdateProject={this.handleUpdateProject.bind(this)}
+                onDeleteProject={this.handleDeleteProject.bind(this)}
+                />
               </div>
             </Layout.Col>
             <Layout.Col span="16">
               <div id="main" className="grid-content bg-purple-light">
                 {this.state.projects.map((project,i)=>
-                <TaskList key={i} index={i} pid={project.pid} desc={project.desc} 
+                <TaskList key={i} index={i} pid={project.pid} name={project.name} 
                   tasks={project.tasks}
                   onAddTask={this.handleAddTask.bind(this)}
                   onDeleteTask={this.handleDeleteTask.bind(this)}

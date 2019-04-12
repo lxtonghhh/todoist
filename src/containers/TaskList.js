@@ -9,7 +9,7 @@ const hidden={display:'none'}
 export default class TaskList extends Component{
 	static propTypes={
 		pid:PropTypes.string,
-		desc:PropTypes.string,
+		name:PropTypes.string,
 		index:PropTypes.number,
 		tasks:PropTypes.array,
 		onAddTask:PropTypes.func,
@@ -55,7 +55,7 @@ export default class TaskList extends Component{
 	render(){
 		return (
 			<div className="task-list">
-				<p>任务列表/项目{this.props.pid}： {this.props.desc}</p>
+				<p>任务列表/项目{this.props.pid}： {this.props.name}</p>
 				{this.props.tasks.map((item,i)=>
 					<Task key={i} index={i} ddl={item.ddl} content={item.content}
 					onDeleteTask={this.handleDeleteTask.bind(this)}
