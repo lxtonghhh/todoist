@@ -57,12 +57,12 @@ class Task extends Component{
 					<table>
 						<tbody>
 							<tr>
-								<td><Button className="button-finish" type="primary" icon="edit" size="mini" onClick={this.handleFinishTask.bind(this)}></Button></td>
+								<td><Button className="button-finish" type="primary" icon="circle-check" size="mini" onClick={this.handleFinishTask.bind(this)}></Button></td>
 								<td><span className="task-content-text" 
 								onClick={()=>{this.setState({isUpDating:true,updateContent:this.props.content,updateDate:this.props.ddl})}}>
 								任务： {this.props.content}</span></td>
 								<td>截止： {this.props.ddl.toLocaleDateString()}</td>
-								<td><Button className="button-delete" type="primary" icon="delete" size="mini" onClick={this.handleDeleteTask.bind(this)}></Button></td>
+								<td><Button className="button-delete" type="primary" icon="circle-close" size="mini" onClick={this.handleDeleteTask.bind(this)}></Button></td>
 							</tr>
 						</tbody>
 					</table>

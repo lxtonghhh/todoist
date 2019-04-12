@@ -68,8 +68,8 @@ export default class ProjectList extends Component{
 								/>
 							</Menu.Item>
 						)}
-						<div className="to-add-bar" style={this.state.isAdding?hidden:show} 
-						onClick={(e)=>{this.setState({isAdding:true})}}>添加项目
+						<div className="to-add-bar" style={this.state.isAdding?hidden:show}>
+							<Button icon="plus" size="mini" onClick={(e)=>{this.setState({isAdding:true})}}>添加项目</Button>
 						</div>
 						<div className="adding-bar" style={{...{flexDirection:'row'},...this.state.isAdding?show:hidden}}>
 							<table>
