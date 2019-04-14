@@ -58,6 +58,9 @@ class App extends Component {
       activeProject={pid:'-1',name:"今日任务",tasks:newTasks}
     }else{
       activeProject= projects[activeIndex]
+      if (!activeProject){
+        activeProject=projects[0]
+      }
     }
     console.log('_load_project After',activeProject)
     return activeProject
@@ -133,6 +136,13 @@ class App extends Component {
     console.log('APP更新项目 After',projects)
   }
   handleDeleteProject(projectIndex){
+    if(projectIndex===0){
+      //收件箱无法被删除
+      return 
+    }
+    if(projectIndex===this.state.activeIndex){
+      this.setState({activeIndex:0})
+    }
     const projects=this.state.projects
     console.log('APP删除项目',projects,projectIndex)
     let deleteProject=projects.splice(projectIndex,1)
