@@ -1,5 +1,6 @@
 import React,{Component} from 'react'
 import PropTypes from 'prop-types'
+import ReactDOM from 'react-dom';
 import {Form,Select,Button,Radio,Layout,Input} from 'element-react'
 import DatePicker from '../components/DatePicker'
 import _ from 'lodash'
@@ -19,11 +20,12 @@ class Task extends Component{
 		this.state={
 			isUpDating:false,
 			updateContent:'',
-			updateDate:''
+			updateDate:'',
+			isShowMenu:false,
+			menuStyle:null
 		}
 		
 	}
-
 	handleFinishTask(){
 		this.props.onFinishTask(this.props.index)
 	}
@@ -45,6 +47,25 @@ class Task extends Component{
 		this.props.onUpdateTask({content:content,ddl:date},this.props.index)
 		this.setState({isUpDating:false,updateContent:'',updateDate:''})
 	}
+	handleMenuClick(){
+		let isShowMenu
+		let menuStyle
+		let button=this.refs.menuButton
+		if(this.state.isShowMenu){
+			isShowMenu=false
+			menuStyle=null
+			console.log('handleMenuClose',button)
+		}else{
+			isShowMenu=true
+			console.log('handleMenuOpen',button)
+			const dom = ReactDOM.findDOMNode(button);
+			const rect=dom.getBoundingClientRect()
+			console.log(rect)
+			menuStyle={zIndex: 505,top: rect.top+20,left: rect.left-220}
+			console.log(menuStyle)
+		}
+		this.setState({menuStyle,isShowMenu})
+	}
 	onChange(key, value) {
 		console.log('Task onChange',key, value)
 		this.state[key] = value
@@ -63,6 +84,7 @@ class Task extends Component{
 								任务： {this.props.content}</span></td>
 								<td>截止： {this.props.ddl.toLocaleDateString()}</td>
 								<td><Button className="button-delete" type="primary" icon="circle-close" size="mini" onClick={this.handleDeleteTask.bind(this)}></Button></td>
+								<td><Button ref="menuButton" className="button-delete" type="primary" icon="more" size="mini" onClick={this.handleMenuClick.bind(this)}></Button></td>
 							</tr>
 						</tbody>
 					</table>
@@ -77,11 +99,29 @@ class Task extends Component{
 							</tbody>
 						</table>
 						<Button onClick={this.handleUpdateTask.bind(this)}>保存</Button>
-						<Button onClick={()=>{this.setState({isUpDating:false,updateContent:'',updateDate:''})}}>取消</Button>
-						
+						<Button onClick={()=>{this.setState({isUpDating:false,updateContent:'',updateDate:''})}}>取消</Button>	
+				</div>
+				<div className="task-menu" ref="menu" style={{...this.state.menuStyle,...this.state.isShowMenu?show:hidden}}>
+					<table>
+						<tbody>
+							<tr>
+								<td><Button>1</Button></td>
+							</tr>
+							<tr>
+								<td><Button>2</Button></td>
+							</tr>
+							<tr>
+								<td><Button>3</Button></td>
+							</tr>
+							<tr>
+								<td><Button>4</Button></td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		)
 	}
 }
 export default Task
+//<div class="ist_menu" style="z-index: 505; top: 189px; left: 729px;">
