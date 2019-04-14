@@ -10,14 +10,16 @@ export default class ProjectList extends Component{
 		projects:PropTypes.array,
 		onAddProject:PropTypes.func,
 		onDeleteProject:PropTypes.func,
-		onUpdateProject:PropTypes.func
+		onUpdateProject:PropTypes.func,
+		onChooseProject:PropTypes.func
 	}
 	
 	constructor(){
 		super()
 		this.state={
 			isAdding:false,
-			addContent:''
+			addContent:'',
+			activeIndex:'0'
 		}
 	}
 	handleAddProject(){
@@ -50,18 +52,25 @@ export default class ProjectList extends Component{
 	handleClose(index) {
 		console.log('handleClose',index)
 	}
-	handleSelect(index){
-		console.log('handleSelect',index)
+	handleSelect(indexStr){
+		console.log('handleSelect',indexStr)
+		this.setState({activeIndex:indexStr})
+		if(indexStr.startsWith('1')){
+			console.log('Choose Project',parseInt(indexStr.substr(2), 10))
+			this.props.onChooseProject(parseInt(indexStr.substr(2), 10))
+		}else{
+			this.props.onChooseProject(parseInt(indexStr, 10))
+		}
 	}
 	render(){
 		return (
 			<div className="project-list">
-				<Menu defaultActive="1" onOpen={this.handleOpen.bind(this)} onClose={this.handleClose.bind(this)} onSelect={this.handleSelect.bind(this)}>
-					<Menu.Item index="1"><i className="el-icon-message"></i>收件箱</Menu.Item>
-					<Menu.Item index="2"><i className="el-icon-date"></i>今天</Menu.Item>
-					<Menu.SubMenu index="3" title={<span><i className="el-icon-menu"></i>项目</span>}>
+				<Menu defaultActive={this.state.activeIndex} onOpen={this.handleOpen.bind(this)} onClose={this.handleClose.bind(this)} onSelect={this.handleSelect.bind(this)}>
+					<Menu.Item index="0"><i className="el-icon-message"></i>收件箱</Menu.Item>
+					<Menu.Item index="-1"><i className="el-icon-date"></i>今天</Menu.Item>
+					<Menu.SubMenu index="1" title={<span><i className="el-icon-menu"></i>项目</span>}>
 						{this.props.projects.map((item,i)=>
-							<Menu.Item index={"3-"+i} key={i}> 
+							<Menu.Item index={"1-"+i} key={i}> 
 								<Project index={i} project={item}
 								onDeleteProject={this.handleDeleteProject.bind(this)}
 								onUpdateProject={this.handleUpdateProject.bind(this)}

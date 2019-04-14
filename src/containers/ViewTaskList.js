@@ -6,11 +6,11 @@ import DatePicker from '../components/DatePicker'
 import _ from 'lodash'
 const show={display:'flex'}
 const hidden={display:'none'}
-export default class TaskList extends Component{
+export default class ViewTaskList extends Component{
+	//来自从各个项目中过滤出的任务组成的列表 修改会反映到原列表中 添加任务到收件箱
 	static propTypes={
 		pid:PropTypes.string,
 		name:PropTypes.string,
-		index:PropTypes.number,
 		tasks:PropTypes.array,
 		onAddTask:PropTypes.func,
 		onFinishTask:PropTypes.func,
@@ -38,17 +38,17 @@ export default class TaskList extends Component{
 			date=new Date()
 		}
 		console.log('添加任务',this.state.addContent,typeof date)
-		this.props.onAddTask({content:this.state.addContent,ddl:date},this.props.index)
+		this.props.onAddTask({content:this.state.addContent,ddl:date},0)
 		this.setState({addContent:''})
 	}
-	handleFinishTask(taskIndex){
-		this.props.onFinishTask(taskIndex,this.props.index)
+	handleFinishTask(projectIndex,taskIndex){
+		this.props.onFinishTask(taskIndex,projectIndex)
 	}
-	handleDeleteTask(taskIndex){
-		this.props.onDeleteTask(taskIndex,this.props.index)
+	handleDeleteTask(projectIndex,taskIndex){
+		this.props.onDeleteTask(taskIndex,projectIndex)
 	}
-	handleUpdateTask(task,taskIndex){
-		this.props.onUpdateTask(task,taskIndex,this.props.index)
+	handleUpdateTask(projectIndex,task,taskIndex){
+		this.props.onUpdateTask(task,taskIndex,projectIndex)
 	}
 	handlePageChange(currentPage){
 		this.setState({curPageIndex:currentPage-1})
@@ -63,15 +63,15 @@ export default class TaskList extends Component{
 		let total=this.props.tasks.length
 		let startIndex=this.state.curPageIndex*this.state.pageSize
 		let tasks=_.slice(this.props.tasks,startIndex,startIndex+this.state.pageSize)
-		console.log('TaskList',tasks)
+		console.log('ViewTaskList',tasks)
 		return (
 			<div className="task-list">
 				<p>任务列表/项目 {this.props.name}</p>
 				{tasks.map((item,i)=>
-					<Task key={i} index={i} ddl={item.ddl} content={item.content}
-					onDeleteTask={this.handleDeleteTask.bind(this)}
-					onFinishTask={this.handleFinishTask.bind(this)}
-					onUpdateTask={this.handleUpdateTask.bind(this)}
+					<Task key={i} index={item.taskIndex} ddl={item.ddl} content={item.content}
+					onDeleteTask={this.handleDeleteTask.bind(this,item.projectIndex)}
+					onFinishTask={this.handleFinishTask.bind(this,item.projectIndex)}
+					onUpdateTask={this.handleUpdateTask.bind(this,item.projectIndex)}
 					/>
 				)}
 				<div className="to-add-bar" style={this.state.isAdding?hidden:show}>
