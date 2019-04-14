@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
 import PropTypes from 'prop-types'
-import {Table,Form,Select,Button,Radio,Layout,Input} from 'element-react'
+import {Pagination,Table,Form,Select,Button,Radio,Layout,Input} from 'element-react'
 import Task from '../components/Task'
 import DatePicker from '../components/DatePicker'
 import _ from 'lodash'
@@ -23,8 +23,11 @@ export default class TaskList extends Component{
 		this.state={
 			isAdding:false,
 			addContent:'',
-			addDate:''
+			addDate:'',
+			pageSize:3,
+			curPageIndex:0
 		}
+
 	}
 	handleAddTask(){
 		if(!this.state.addContent){
@@ -47,16 +50,23 @@ export default class TaskList extends Component{
 	handleUpdateTask(task,taskIndex){
 		this.props.onUpdateTask(task,taskIndex,this.props.index)
 	}
+	handlePageChange(currentPage){
+		this.setState({curPageIndex:currentPage-1})
+	}
 	onChange(key, value) {
 		console.log('TaskList onChange',key, value)
 		this.state[key] = value
 		this.forceUpdate()
 	}
+
 	render(){
+		let total=this.props.tasks.length
+		let startIndex=this.state.curPageIndex*this.state.pageSize
+		let tasks=_.slice(this.props.tasks,startIndex,startIndex+this.state.pageSize)
 		return (
 			<div className="task-list">
 				<p>任务列表/项目{this.props.pid}： {this.props.name}</p>
-				{this.props.tasks.map((item,i)=>
+				{tasks.map((item,i)=>
 					<Task key={i} index={i} ddl={item.ddl} content={item.content}
 					onDeleteTask={this.handleDeleteTask.bind(this)}
 					onFinishTask={this.handleFinishTask.bind(this)}
@@ -79,6 +89,7 @@ export default class TaskList extends Component{
 					<Button onClick={()=>{this.setState({isAdding:false,addContent:'',addDate:''})}}>取消</Button>
 					
 				</div>
+				<Pagination layout="prev, pager, next" pageSize={this.state.pageSize} total={total} onCurrentChange={this.handlePageChange.bind(this)}/>
 			</div>
 		)
 	}
