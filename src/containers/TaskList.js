@@ -24,7 +24,7 @@ export default class TaskList extends Component{
 			isAdding:false,
 			addContent:'',
 			addDate:'',
-			pageSize:3,
+			pageSize:4,
 			curPageIndex:0
 		}
 
