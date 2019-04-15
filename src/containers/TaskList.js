@@ -69,6 +69,7 @@ export default class TaskList extends Component{
 				<p>任务列表/项目 {this.props.name}</p>
 				{tasks.map((item,i)=>
 					<Task key={i} index={i} ddl={item.ddl} content={item.content}
+					uid={item.uid} pid={item.pid} tid={item.tid} level={item.level} status={item.status}
 					onDeleteTask={this.handleDeleteTask.bind(this)}
 					onFinishTask={this.handleFinishTask.bind(this)}
 					onUpdateTask={this.handleUpdateTask.bind(this)}

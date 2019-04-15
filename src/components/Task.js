@@ -11,6 +11,11 @@ class Task extends Component{
 		index:PropTypes.number,
 		ddl:PropTypes.instanceOf(Date),
 		content:PropTypes.string,
+		uid:PropTypes.string,
+		pid:PropTypes.string,
+		tid:PropTypes.string,
+		level:PropTypes.string,
+		status:PropTypes.string,
 		onFinishTask:PropTypes.func,
 		onDeleteTask:PropTypes.func,
 		onUpdateTask:PropTypes.func,
@@ -44,7 +49,8 @@ class Task extends Component{
 			date=this.state.ddl
 		}
 		console.log('更新任务',content,date)
-		this.props.onUpdateTask({content:content,ddl:date},this.props.index)
+		this.props.onUpdateTask({uid:this.props.uid,pid:this.props.pid,tid:this.props.tid,level:this.props.level,status:this.props.status,content:content,ddl:date},
+			this.props.index)
 		this.setState({isUpDating:false,updateContent:'',updateDate:''})
 	}
 	handleMenuClick(){
