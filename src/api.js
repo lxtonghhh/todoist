@@ -1,8 +1,8 @@
-const LOCAL_HOST="http://127.0.0.1:8000/"
-const HOST_IN_USE=LOCAL_HOST
+const LOCAL_HOST="http://127.0.0.1:80/"
+const ALIYUN_HOST="http://112.74.160.190:8002/"
+const HOST_IN_USE=ALIYUN_HOST
 const initHeaders = new Headers()
 initHeaders.append('Accept', 'application/json, text/plain, */*')
-initHeaders.append('Cache-Control', 'no-cache')
 initHeaders.append('Content-Type', 'application/json;charset=UTF-8')
 
 

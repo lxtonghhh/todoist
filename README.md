@@ -1,4 +1,7 @@
 # todoist
+## demo 
+http://112.74.160.190/todoist/index.html
+
 - 增加一个待办事项
 
 <img src="./gif/add.gif"/>
@@ -34,4 +37,5 @@
 - 项目管理
 
 <img src="./gif/project.gif"/>
+
 
