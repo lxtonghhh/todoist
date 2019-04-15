@@ -23,34 +23,11 @@ export default class MyDatePicker extends Component{
 					align="right"
 					placeholder="日程安排"
 					onChange={date=>{
-					console.debug('DatePicker changed: ', date)
+					console.debug('DatePicker changed: ', this,date)
 					this.setState({value: date})
 					this.props.onChange(date)
 					this.datepicker.value=''
 					}}
-					shortcuts={[{
-						text: '今天',
-						onClick: (picker)=> {
-						this.setState({value: new Date()})
-						this.datepicker.togglePickerVisible()
-						}
-						}, {
-						text: '明天',
-						onClick: (picker)=> {
-						const date = new Date();
-						date.setTime(date.getTime() + 3600 * 1000 * 24);
-						this.setState({value: date})
-						this.datepicker.togglePickerVisible()
-						}
-						}, {
-						text: '一周后',
-						onClick: (picker)=> {
-						const date = new Date();
-						date.setTime(date.getTime() + 3600 * 1000 * 24 * 7);
-						this.setState({value: date})
-						this.datepicker.togglePickerVisible()
-						}
-					}]}
 				/>
 			</div>
 		)

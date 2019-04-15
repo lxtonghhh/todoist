@@ -67,6 +67,7 @@ export default class ProjectList extends Component{
 			<div className="project-list">
 				<Menu defaultActive={this.state.activeIndex} onOpen={this.handleOpen.bind(this)} onClose={this.handleClose.bind(this)} onSelect={this.handleSelect.bind(this)}>
 					<Menu.Item index="0"><i className="el-icon-message"></i>收件箱</Menu.Item>
+					<Menu.Item index="-2"><i className="el-icon-document"></i>全部</Menu.Item>
 					<Menu.Item index="-1"><i className="el-icon-date"></i>今天</Menu.Item>
 					<Menu.SubMenu index="1" title={<span><i className="el-icon-menu"></i>项目</span>}>
 						{this.props.projects.map((item,i)=>
@@ -77,7 +78,7 @@ export default class ProjectList extends Component{
 								/>
 							</Menu.Item>
 						)}
-						<div className="to-add-bar" style={this.state.isAdding?hidden:show}>
+						<div className="to-add-project-bar" style={this.state.isAdding?hidden:show}>
 							<Button icon="plus" size="mini" onClick={(e)=>{this.setState({isAdding:true})}}>添加项目</Button>
 						</div>
 						<div className="adding-bar" style={{...{flexDirection:'row'},...this.state.isAdding?show:hidden}}>

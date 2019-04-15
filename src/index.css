@@ -51,11 +51,42 @@ code {
   padding-bottom: 10px;
   min-height: 50px;
 }
+.to-add-project-bar {
+  padding: 0px 45px;
+}
+td .project-color{
+  height:50px;
+  color: rgb(184, 184, 184);
+  padding: 8px 0px;
+}
+.color-point {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: currentColor;
+    border-radius: 50%;
+}
+.project-item{
+    height:50px;
+    padding: 0;
+    position: relative;
+}
+td .project-content-text .project-update .project-delete 
+.project-update-input .project-update-save .project-update-cancel{
+    height:50px;
+}
+.project-task-count{
+    font-size: 8px;
+    line-height: 5px;
+    padding: 0;
+}
+    
 .task-menu {
     border-collapse: collapse;
     padding: 0;
     margin: 4px 0;
-    min-width: 250px;
+    min-width: 40px;
     cursor: default;
     position: absolute;
     top: 0;

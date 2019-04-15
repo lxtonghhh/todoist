@@ -7,7 +7,8 @@ import 'element-theme-default'
 import './index.css';
 import {Layout,Loading} from 'element-react'
 import Logo from './components/Logo'
-import {postAddTask,postAddProject,getAllTasks,postUpdateTask,postUpdateProject,postDeleteProject,postDeleteTask,parseProjects} from './api'
+import {postAddTask,postAddProject,getAllTasks,postUpdateTask,postUpdateProject,postDeleteProject,
+postDeleteTask,postFinishTask,parseProjects} from './api'
 import _ from 'lodash'
 class App extends Component {
   constructor(){
@@ -69,6 +70,7 @@ class App extends Component {
     }
     let activeProject
     if(activeIndex===-1){
+      //今日任务
       let today=new Date()
       let newTasks=[]
       for (let [projectIndex, project] of projects.entries()){
@@ -81,7 +83,20 @@ class App extends Component {
         newTasks=_.concat(newTasks,partTasks)
       }
       activeProject={pid:'-1',name:"今日任务",tasks:newTasks}
-    }else{
+    }
+    else if(activeIndex===-2){
+      //所有任务
+      let newTasks=[]
+      for (let [projectIndex, project] of projects.entries()){
+        let partTasks=[]
+        for(let [taskIndex, task] of project.tasks.entries()){
+          partTasks.push({...task,taskIndex,projectIndex})
+        }
+        newTasks=_.concat(newTasks,partTasks)
+      }
+      activeProject={pid:'-2',name:"所有任务",tasks:newTasks}
+    }
+    else{
       activeProject= projects[activeIndex]
       if (!activeProject){
         activeProject=projects[0]
@@ -130,14 +145,27 @@ class App extends Component {
     .catch(err=>{console.log('错误', err)})
   }
   handleFinishTask(taskIndex,projectIndex){
-    const projects=this.state.projects
-    console.log('APP完成任务',taskIndex,projectIndex,projects)
-    const tasks=this.state.projects[projectIndex].tasks
-    let finishTask=tasks.splice(taskIndex,1)
-    let newTasks=tasks
+    const task=this.state.projects[projectIndex].tasks[taskIndex]
+    postFinishTask('admin',task.pid,task.tid)
+    .then(res=>{
+      return res.json()
+    })
+    .then(data=>{
+      console.log('Res UpdateTask',data)
+      if(data.sc===200){
+        const projects=this.state.projects
+        console.log('APP完成任务',taskIndex,projectIndex,projects)
+        const tasks=this.state.projects[projectIndex].tasks
+        let finishTask=tasks.splice(taskIndex,1)
+        let newTasks=tasks
 
-    this._updateTasks(projects,projectIndex,newTasks)
-    console.log('APP完成任务 After',projects)
+        this._updateTasks(projects,projectIndex,newTasks)
+        console.log('APP完成任务 After',projects)
+      }else{
+        return 
+      }
+    })
+    .catch(err=>{console.log('错误', err)})
   }
   handleDeleteTask(taskIndex,projectIndex){
     const task=this.state.projects[projectIndex].tasks[taskIndex]
@@ -274,7 +302,7 @@ class App extends Component {
       taskList=null
     }else{
       let activeProject=this._load_project(this.state.activeIndex)
-      if(this.state.activeIndex===-1){
+      if(this.state.activeIndex<0){//-1今日任务视图 -2所有任务视图
         taskList= <ViewTaskList pid={activeProject.pid} name={activeProject.name} 
           tasks={activeProject.tasks}
           onAddTask={this.handleAddTask.bind(this)}

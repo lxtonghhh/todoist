@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import {Form,Select,Button,Radio,Layout,Input} from 'element-react'
 import DatePicker from '../components/DatePicker'
 import _ from 'lodash'
+const levelToColorType={"1":"info","2":"success","3":"warning","4":"danger"}
 const show={display:'flex'}
 const hidden={display:'none'}
 class Task extends Component{
@@ -31,6 +32,24 @@ class Task extends Component{
 		}
 		
 	}
+	_map_date_to_ddl(date){
+		let today=new Date()
+		if(date.toLocaleDateString()===today.toLocaleDateString()){
+			return "今天"
+		}
+		else if(date<today)
+		{
+			return "已过期"
+		}
+		else{
+			let tomorrow=new Date(today.getTime() + 24*60*60*1000)
+			if(date.toLocaleDateString()===tomorrow.toLocaleDateString()){
+				return "明天"
+			}else{
+				return date.toLocaleDateString()
+			}
+		}
+	}
 	handleFinishTask(){
 		this.props.onFinishTask(this.props.index)
 	}
@@ -53,6 +72,15 @@ class Task extends Component{
 			this.props.index)
 		this.setState({isUpDating:false,updateContent:'',updateDate:''})
 	}
+	handleChangeLevel(newLevel){
+		if(newLevel===this.props.level){
+			return
+		}else{
+			this.props.onUpdateTask({uid:this.props.uid,pid:this.props.pid,tid:this.props.tid,level:newLevel,status:this.props.status,content:this.props.content,ddl:this.props.ddl},
+			this.props.index)
+			this.setState({isShowMenu:false,menuStyle:null})
+		}
+	}
 	handleMenuClick(){
 		let isShowMenu
 		let menuStyle
@@ -67,7 +95,7 @@ class Task extends Component{
 			const dom = ReactDOM.findDOMNode(button);
 			const rect=dom.getBoundingClientRect()
 			console.log(rect)
-			menuStyle={zIndex: 505,top: rect.top+20,left: rect.left-220}
+			menuStyle={zIndex: 505,top: rect.top+20,left: rect.left-20}
 			console.log(menuStyle)
 		}
 		this.setState({menuStyle,isShowMenu})
@@ -78,6 +106,7 @@ class Task extends Component{
 		this.forceUpdate()
 	}
 	render(){
+
 		return (
 			<div>
 				<div className="task-item" style={this.state.isUpDating?hidden:show}>
@@ -88,9 +117,9 @@ class Task extends Component{
 								<td><span className="task-content-text" 
 								onClick={()=>{this.setState({isUpDating:true,updateContent:this.props.content,updateDate:this.props.ddl})}}>
 								任务： {this.props.content}</span></td>
-								<td>截止： {this.props.ddl.toLocaleDateString()}</td>
+								<td><span style={{padding:"0px 20px"}}>截止： {this._map_date_to_ddl(this.props.ddl)}</span></td>
 								<td><Button className="button-delete" type="primary" icon="circle-close" size="mini" onClick={this.handleDeleteTask.bind(this)}></Button></td>
-								<td><Button ref="menuButton" className="button-delete" type="primary" icon="more" size="mini" onClick={this.handleMenuClick.bind(this)}></Button></td>
+								<td><Button ref="menuButton" className="button-delete" type={levelToColorType[this.props.level]} icon="star-off" size="mini" onClick={this.handleMenuClick.bind(this)}></Button></td>
 							</tr>
 						</tbody>
 					</table>
@@ -111,16 +140,20 @@ class Task extends Component{
 					<table>
 						<tbody>
 							<tr>
-								<td><Button>1</Button></td>
+								<td><Button plain={this.props.level==='1'?false:true} 
+								onClick={this.handleChangeLevel.bind(this,"1")} type="info">优先级1</Button></td>
 							</tr>
 							<tr>
-								<td><Button>2</Button></td>
+								<td><Button plain={this.props.level==='2'?false:true} 
+								onClick={this.handleChangeLevel.bind(this,"2")} type="success">优先级2</Button></td>
 							</tr>
 							<tr>
-								<td><Button>3</Button></td>
+								<td><Button plain={this.props.level==='3'?false:true}
+								onClick={this.handleChangeLevel.bind(this,"3")} type="warning">优先级3</Button></td>
 							</tr>
 							<tr>
-								<td><Button>4</Button></td>
+								<td><Button plain={this.props.level==='4'?false:true}
+								onClick={this.handleChangeLevel.bind(this,"4")} type="danger">优先级4</Button></td>
 							</tr>
 						</tbody>
 					</table>

@@ -48,36 +48,35 @@ class Task extends Component{
 	render(){
 		return (
 			<div>
-				<div className="project-item" style={this.state.isUpDating?hidden:show}>
-					<table>
-						<tbody>
-							<tr>
-								<td className="project-color"></td>
-								<td><span className="project-content-text">{this.props.project.name}</span></td>
-								<td className="project-task-count">{this.props.project.tasks.length}</td>
-								<td>
-									<Button className="project-update" type="primary" icon="edit" size="mini" 
-									onClick={()=>{this.setState({isUpDating:true,updateContent:this.props.project.name})}}></Button>
-								</td>
-								<td>
-									<Button className="project-delete" type="primary" icon="delete" size="mini" 
-									onClick={this.handleDeleteProject.bind(this)}></Button>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+				<table className="project-item" style={this.state.isUpDating?hidden:show}>
+					<tbody>
+						<tr>
+							<td className="project-color"><div className="color-point"></div></td>
+							<td><span className="project-content-text">{this.props.project.name}</span></td>
+							<td><span className="project-task-count">{this.props.project.tasks.length}</span></td>
+							<td>
+								<Button className="project-update" type="primary" icon="edit" size="mini" 
+								onClick={()=>{this.setState({isUpDating:true,updateContent:this.props.project.name})}}></Button>
+							</td>
+							<td>
+								<Button className="project-delete" type="primary" icon="delete" size="mini" 
+								onClick={this.handleDeleteProject.bind(this)}></Button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 				<div className="adding-bar" style={{...{flexDirection:'row'},...this.state.isUpDating?show:hidden}}>
 						<table>
 							<tbody>
 								<tr>
-									<td><Input size="small" placeholder="" value={this.state.updateContent} onChange={this.onChange.bind(this, 'updateContent')}/></td>
+									<td><Input className="project-update-input" size="small" placeholder="" value={this.state.updateContent} onChange={this.onChange.bind(this, 'updateContent')}/></td>
+									<td>
+										<Button className="project-update-save" onClick={this.handleUpdateProject.bind(this)}>保存</Button>
+										<Button className="project-update-cancel" onClick={()=>{this.setState({isUpDating:false,updateContent:''})}}>取消</Button>
+									</td>
 								</tr>
 							</tbody>
-						</table>
-						<Button onClick={this.handleUpdateProject.bind(this)}>保存</Button>
-						<Button onClick={()=>{this.setState({isUpDating:false,updateContent:''})}}>取消</Button>
-						
+						</table>	
 				</div>
 			</div>
 		)

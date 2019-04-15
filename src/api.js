@@ -66,6 +66,18 @@ export const postDeleteTask = (uid,pid,tid) => {
 	}
 	return fetch(url,init)
 }
+export const postFinishTask = (uid,pid,tid) => {
+	let url=HOST_IN_USE+'api/v1/task/update'
+	let data = {uid,pid,tid,status:'finish'}
+	let body = JSON.stringify(data, null, 2)
+	const init = {
+	  method: 'POST',
+	  headers: initHeaders,
+	  mode: 'cors',
+	  body
+	}
+	return fetch(url,init)
+}
 export const postDeleteProject = (uid,pid) => {
 	let url=HOST_IN_USE+'api/v1/project/update'
 	let data = {uid,pid,status:'abort'}
