@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom';
-import {Form,Select,Button,Radio,Layout,Input} from 'element-react'
+import {Button,Input} from 'element-react'
 import DatePicker from '../components/DatePicker'
 import _ from 'lodash'
 const levelToColorType={"1":"info","2":"success","3":"warning","4":"danger"}
